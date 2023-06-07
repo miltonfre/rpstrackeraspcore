@@ -21,35 +21,51 @@
     <div class="form-group row">
         <label asp-for="@Model.Estimate" class="col-sm-2 col-form-label"></label>
         <div class="col-sm-6">
-            <input type="range" asp-for="@Model.Estimate" min="0" max="20" step="1" class="form-control" />
+           @* <input type="range" asp-for="@Model.Estimate" min="0" max="20" step="1" class="form-control" />*@
+            <kendo-slider for="@Model.Estimate" min="0" max="20" large-step="1" style="width: 100%" ></kendo-slider>
         </div>
     </div>
 
     <div class="form-group row">
         <label asp-for="@Model.SelectedItemType" class="col-sm-2 col-form-label"></label>
         <div class="col-sm-6">
-            <select asp-for="@Model.SelectedItemType" asp-items="@Model.ItemTypes" class="form-control"></select>
+            <kendo-dropdownlist name="SelectedItemType" 
+                                bind-to="@Model.ItemTypes"
+                                template-id="templateItemType"
+                                value="@Model.SelectedItemType"></kendo-dropdownlist> 
+                                @*this is a a reference to a template create datanthe end typeof="this file".*@
         </div>
     </div>
 
     <div class="form-group row">
         <label asp-for="@Model.SelectedStatus" class="col-sm-2 col-form-label"></label>
         <div class="col-sm-6">
-            <select asp-for="@Model.SelectedStatus" asp-items="@Model.Statuses" class="form-control"></select>
+            <kendo-dropdownlist name="SelectedStatus"
+                                bind-to="@Model.Statuses"
+                                value="@Model.SelectedStatus"></kendo-dropdownlist>
         </div>
     </div>
 
     <div class="form-group row">
         <label asp-for="@Model.SelectedPriority" class="col-sm-2 col-form-label"></label>
         <div class="col-sm-6">
-            <select asp-for="@Model.SelectedPriority" asp-items="@Model.Priorities" class="form-control"></select>
+            <kendo-dropdownlist name="SelectedPriority"
+                                bind-to="@Model.Priorities"
+                                value="@Model.SelectedPriority"
+                                template="<span class='badge priority-#:data.toLowerCase()#'>#:data#</span>">
+                                            @*this is a template inline. Todo lo que esta entre los numerales sera evaluado dentro del iterator, en este caso estariamos 
+                                             usando una clase con el nombre priority-warming, 
+                                            priority-los demas nombres del iterator, dentro de esto se pueden llamar JS, en este caso se convierte el valor en minusula *@
+                            </kendo-dropdownlist>
         </div>
     </div>
 
     <div class="form-group row">
         <label asp-for="@Model.SelectedAssigneeId" class="col-sm-2 col-form-label"></label>
         <div class="col-sm-6">
-            <select asp-for="@Model.SelectedAssigneeId" asp-items="@Model.Users" class="form-control"></select>
+            <kendo-dropdownlist name="SelectedAssigneeId"
+                                bind-to="@Model.Users"
+                                value="@Model.SelectedAssigneeId"></kendo-dropdownlist>
         </div>
     </div>
 
@@ -60,3 +76,10 @@
         </div>
     </div>
 </form>
+<script id="templateItemType" type="text/x-kendo-template">
+    <img src="@Url.Content("~/images/icon_#:data#.png")" class="backlog-icon"/>@* #:data# Valor del iterator*@
+    <span>
+        #:data# @*Valor del iterator*@
+    </span>
+    
+</script>

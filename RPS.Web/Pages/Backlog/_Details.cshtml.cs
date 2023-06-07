@@ -42,19 +42,19 @@ namespace RPS.Web.Pages.Backlog
             [Display(Name = "Assignee")]
             public int SelectedAssigneeId { get; set; }
 
-            public IEnumerable<SelectListItem> ItemTypes
+            public IEnumerable<string> ItemTypes
             {
-                get { return new SelectList(_itemTypes, SelectedItemType); }
+                get { return _itemTypes.Select(i=>i.ToString()); }
             }
 
-            public IEnumerable<SelectListItem> Statuses
+            public IEnumerable<string> Statuses
             {
-                get { return new SelectList(_statuses, SelectedStatus); }
+                get { return _statuses.Select(i => i.ToString()); }
             }
 
-            public IEnumerable<SelectListItem> Priorities
+            public IEnumerable<string> Priorities
             {
-                get { return new SelectList(_priorities, SelectedPriority); }
+            get { return _priorities.Select(i => i.ToString()); }
             }
 
             public IEnumerable<SelectListItem> Users

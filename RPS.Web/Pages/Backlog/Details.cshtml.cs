@@ -89,7 +89,6 @@ namespace RPS.Web.Pages.Backlog
                 Completed = completed.HasValue ? completed.Value : false
             };
             rpsTasksRepo.UpdateTask(uTask);
-
             return RedirectToPage("Details", new { id = DetailsFormVm.Id, Screen });
         }
 

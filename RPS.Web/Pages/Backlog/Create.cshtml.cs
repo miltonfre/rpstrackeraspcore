@@ -32,9 +32,9 @@ namespace RPS.Web.Pages.Backlog
         [BindProperty]
         public ItemTypeEnum TypeStr { get; set; }
 
-        public IEnumerable<SelectListItem> ItemTypes
+        public IEnumerable<string> ItemTypes
         {
-            get { return new SelectList(_itemTypes, ItemTypeEnum.Bug); }
+            get {return  _itemTypes.Select(i=>i.ToString()); }
         }
 
         public CreateModel(IPtItemsRepository rpsItemsData)

@@ -2,20 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Telerik.UI.for.AspNet.Core.Trial" Version="2023.1.425" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\RPS.Core\RPS.Core.csproj" />
     <ProjectReference Include="..\RPS.Data\RPS.Data.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="wwwroot\css\site.css">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
   </ItemGroup>
 
 </Project>

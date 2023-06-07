@@ -7,9 +7,16 @@
 
     <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
-
+    @* Add the Kendo Bootstrap theme: *@
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/themes/6.3.0/bootstrap/bootstrap-main.css" />
     @RenderSection("styles", required: false)
 
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    @* Add the Kendo UI scripts: *@
+    <script src="https://kendo.cdn.telerik.com/2023.1.425/js/kendo.all.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2023.1.425/js/kendo.aspnetmvc.min.js"></script>
+    @Html.Kendo().DeferredScripts()
+    @RenderSection("scripts", required: false)
 
 </head>
 <body>
@@ -189,7 +196,6 @@
 
     </div>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    @RenderSection("scripts", required: false)
+  
 </body>
 </html>

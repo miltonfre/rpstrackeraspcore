@@ -17,7 +17,38 @@
 
     </div>
 </div>
-
+@(
+Html.Kendo().Grid(Model.GridData)
+    .Name("grid")
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.Type).Width(50).Title(" ");
+        columns.Bound(c => c.AssigneeFullName).Title("Assignee").Width(120);
+        columns.Bound(c => c.Title);
+        columns.Bound(c => c.Priority).Width(100);
+        columns.Bound(c => c.Estimate).Width(100);
+        columns.Bound(c => c.DateCreated).Width(160);
+    })
+    .ClientRowTemplate("<tr>" +
+                            "<td><div class='pt-indicator' data-id='#:data.Id#'><img src='#:imageResFromType(data.Type)#' class='backlog-icon' /></div></td>" +
+                            "<td><img src='/#:data.AssigneeAvatar#' class='li-avatar rounded mx-auto d-block' /></td>" +
+                            "<td><span class='li-title'>#:data.Title#</span></td>" +
+                            "<td><span class='badge #:getIndicatorClass(data.Priority)#'>#:data.Priority#</span></td>" +
+                            "<td><span class='li-estimate'>#:data.Estimate#</span></td>" +
+                            "<td><span class='li-date'>#:data.DateCreated.toDateString()#</span></td>" +
+                        "</tr>")
+    .Pageable()
+    .Sortable()
+    .Scrollable(scr => scr.Height(430))
+    .Selectable()
+      .Events(events =>
+                {
+                    events.Change("onChange");
+                })
+)
+@*<kendo-grid name="grid2">
+    <datasource data="@Model.GridData"></datasource>
+</kendo-grid>*@
 <div class="table-responsive">
     <table class="table table-striped table-sm table-hover">
         <thead>
@@ -61,4 +92,50 @@
 @section styles {
     <link href="~/css/backlog.css" rel="stylesheet" />
 }
+
+@*<script id="templateDateCreated" type="text/x-kendo-template">
+      <span class="li-date">
+        #:data.DateCreated.toDateString()#
+    </span>
+</script>*@
+
+
+@section scripts {
+
+    <script>
+         function imageResFromType(ptItemType) {
+            switch (ptItemType) {
+                case 'PBI':
+                    return '/images/icon_pbi.png';
+                case 'Bug':
+                    return '/images/icon_bug.png';
+                case 'Chore':
+                    return '/images/icon_chore.png';
+                case 'Impediment':
+                    return '/images/icon_impediment.png';
+                default:
+                    return '';
+            }
+        }
+        function getIndicatorClass(priority) {
+            switch (priority) {
+                case 'Critical':
+                    return 'priority-critical';
+                case 'High':
+                    return 'priority-high';
+                case 'Medium':
+                    return 'priority-medium';
+                case 'Low':
+                    return 'priority-low';
+                default:
+                    return '';
+            }
+        }
+        function onChange(arg) {
+            var rows = arg.sender.select();
+            var itemId = $($(rows[0]).find('.pt-indicator')[0]).attr('data-id');
+            window.location.href = `/${itemId}/Details`;
+        }
+    </script>
+    }
 

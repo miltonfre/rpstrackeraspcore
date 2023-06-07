@@ -14,7 +14,6 @@ namespace RPS.Web.Pages
     {
         private readonly IPtDashboardRepository rpsDashRepo;
         private readonly IPtUserRepository rpsUserRepo;
-
         public DateTime? DateStart { get; set; }
         public DateTime? DateEnd { get; set; }
 
@@ -22,31 +21,29 @@ namespace RPS.Web.Pages
         public int IssueCountClosed { get; set; }
 
         public int IssueCountActive { get { return IssueCountOpen + IssueCountClosed; } }
-        public decimal IssueCloseRate
-        {
-            get
-            {
+        public decimal IssueCloseRate { 
+            get 
+            { 
                 if (IssueCountActive == 0)
                 {
                     return 0m;
                 }
-                return Math.Round((decimal)IssueCountClosed / (decimal)IssueCountActive * 100m, 2);
-            }
+                return Math.Round((decimal)IssueCountClosed / (decimal)IssueCountActive * 100m, 2); 
+            } 
         }
 
-        public int? SelectedAssigneeId { get; set; }
+        public int? SelectedAssignedId { get; set; }
         public List<PtUser> Assignees { get; set; }
 
+        //chart properties
         public object[] Categories { get; set; }
-
         public List<int> ItemsOpenByMonth { get; set; }
-        public List<int> ItemsClosedByMonth { get; set; }
+        public List<int> ItemsCloseByMonth { get; set; }
 
-
-        public DashboardModel(IPtDashboardRepository rpsDashData, IPtUserRepository rpsUserData)
+        public DashboardModel(IPtDashboardRepository rpsDashData, IPtUserRepository ptUserData )
         {
             rpsDashRepo = rpsDashData;
-            rpsUserRepo = rpsUserData;
+            rpsUserRepo = ptUserData;
         }
 
         public void OnGet(int? userId, int? months)
@@ -75,20 +72,23 @@ namespace RPS.Web.Pages
             }
 
             Assignees = rpsUserRepo.GetAll().ToList();
-            if (userId.HasValue)
-                SelectedAssigneeId = userId.Value;
 
-            //Chart related
+            if(userId.HasValue)
+                SelectedAssignedId = userId.Value;
+
+
+            //chart related
+            var filteredIssues=rpsDashRepo.GetFilteredIssues(filter);
+
             ItemsOpenByMonth = new List<int>();
-            ItemsClosedByMonth = new List<int>();
+            ItemsCloseByMonth = new List<int>();
 
-            var filteredIssues = rpsDashRepo.GetFilteredIssues(filter);
             filteredIssues.MonthItems.ForEach(i => {
                 ItemsOpenByMonth.Add(i.Open.Count);
-                ItemsClosedByMonth.Add(i.Closed.Count);
+                ItemsCloseByMonth.Add(i.Closed.Count);
             });
 
-            Categories = filteredIssues.Categories.Select(i => (object)i).ToArray();
+        Categories = filteredIssues.Categories.Select(i=>(object)i).ToArray();//Categorues is date, need to convert to object
         }
     }
 }
